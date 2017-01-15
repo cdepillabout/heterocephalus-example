@@ -1,6 +1,6 @@
-# Example showing how to use -ddump-splices to look at generated Template Haskell code
+# Using -ddump-splices
 
-[![Build Status](https://travis-ci.org/arowM/heterocephalus.svg?branch=master)](https://travis-ci.org/arowM/heterocephalus)
+[![Build Status](https://travis-ci.org/cdepillabout/heterocephalus-example.svg?branch=master)](https://travis-ci.org/cdepillabout/heterocephalus-example)
 
 ## Using the example program to check the generated Haskell code
 
