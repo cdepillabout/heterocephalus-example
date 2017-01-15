@@ -1,0 +1,27 @@
+name:                heterocephalus-example
+version:             0.1.0.0
+synopsis:            Example program for heterocephalus
+description:         See README.md
+homepage:            https://github.com/cdepillabout/heterocephalus-example#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Dennis Gosnell
+maintainer:          cdep.illabout@gmail.com
+copyright:           2017 Dennis Gosnell
+category:            Example
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+executable heterocephalus-example
+  main-is:             Example.hs
+  hs-source-dirs:      app
+  build-depends:       base
+                     , blaze-html
+                     , heterocephalus
+  default-language:    Haskell2010
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+
+source-repository head
+  type:     git
+  location: https://github.com/cdepillabout/heterocephalus-example
