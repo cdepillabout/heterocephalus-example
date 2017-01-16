@@ -2,32 +2,113 @@
 
 [![Build Status](https://travis-ci.org/cdepillabout/heterocephalus-example.svg?branch=master)](https://travis-ci.org/cdepillabout/heterocephalus-example)
 
-## Using the example program to check the generated Haskell code
+When debugging Haskell code, it can be useful to look at the code generated
+from Template Haskell and Quasiquote expressions.  This repository is a
+tutorial explaining an easy way to get the generated code.
 
-The example program can be used to easily check the generated Haskell code, for
-instance when using heterocephalus functions like `compileText`,
-`compileTextFile`, etc.
+## The Intro
 
-First, compile the example program with `-ddump-splices` in order to get
-GHC/Stack to dump the generated Haskell code to a file.  The example program
-will only build if we enable the `buildexample` flag.
+This repository contains a single Haskell file, [Example.hs](Example.hs).  It
+is a small example of using
+[heterocephalus](https://hackage.haskell.org/package/heterocephalus), a
+type-safe template engine.
+
+The Haskell code defining the the template looks like this:
+
+```haskell
+template :: Html
+template =
+  let a = "hello"
+      b = 3 :: Int
+      cs = ["foo", "bar", "baz"]
+  in [compileText|
+variable interpolation:
+  #{a}
+
+if control statement:
+%{ if (b == 3) }
+  b is 3
+%{ else }
+  b is some other number
+%{ endif }
+
+forall control statement:
+%{ forall c <- cs }
+  #{c}
+%{ endforall }
+   |]
+```
+
+Everything within the `compileText` quasiquote is expanded at compile-time into
+Haskell code.  This tutorial will walk-through how to see what code is
+generated.
+
+## The Setup
+
+This tutorial assumes you are using `stack`.  You need to [install
+`stack`](https://docs.haskellstack.org/en/stable/README/#how-to-install) if you
+haven't already done so.
+
+If you don't have GHC installed, you can install it with `stack`.
+
+```sh
+$ stack setup
+```
+
+Now that GHC is installed, you can build the example program.
+
+```sh
+$ stack build
+```
+
+The example program is built and placed somewhere under the `.stack-work/`
+directory.  You can use `stack exec` to execute it:
+
+```sh
+$ stack exec -- heterocephalus-example
+
+variable interpolation:
+  hello
+
+if control statement:
+  b is 3
+
+forall control statement:
+  foo
+  bar
+  baz
+```
+
+## `-ddump-splices`
+
+We need to compile the example program with the GHC flag `-ddump-splices` in
+order to get GHC/Stack to dump the generated Haskell code to a file.
+
+If the example program has already been built (as above), then we need to do a
+`stack clean` first to make sure the executable gets rebuilt.  After that, we
+run `stack build` again, but we throw on the `-ddump-splices` flag.
+
 
 ```sh
 $ stack clean
-$ stack build --flag "heterocephalus:buildexample" --ghc-options="-ddump-splices"
+$ stack build --ghc-options="-ddump-splices"
 ```
+
+__NOTE__: Not running a `stack clean` first can cause the `stack build` to
+appear to succeed, but no splice file to generated.  Make sure you do a `stack
+clean` before your `stack build` whenever you're using `-ddump-splices`.
 
 GHC/Stack will generate a splice file somewhere under `.stack-work/`.  The
 location of the splice file will change depending on the architecture and Cabal
-version.  `find` can be used to easily figure out where the splice file is.
+version. `find` can be used to easily figure out where the splice file is.
 
 ```sh
 $ find .stack-work/ -name "*.dump-splices"
-.stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/heterocephalus-example/heterocephalus-example-tmp/example/Example.dump-splices
+.stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/heterocephalus-example/heterocephalus-example-tmp/app/Example.dump-splices
 ```
 
-This file will show the Haskell code is generated from each Template Haskell and
-quasiquote expression.
+This `.dump-splices` file will show the Haskell code is generated from each
+Template Haskell and quasiquote expression.
 
 For example, a quasiquote like this:
 
@@ -39,7 +120,76 @@ will produce Haskell code that looks like this (slightly simplified):
 
 ```haskell
 do
-  preEscapedText $ pack "foo "
+  preEscapedText "foo "
   preEscapedToMarkup a
 ```
 
+## Generated Code for the Example Template
+
+Lets go back to the example program.  Once again, the template is defined like
+this:
+
+```haskell
+template :: Html
+template =
+  let a = "hello"
+      b = 3 :: Int
+      cs = ["foo", "bar", "baz"]
+  in [compileText|
+variable interpolation:
+  #{a}
+
+if control statement:
+%{ if (b == 3) }
+  b is 3
+%{ else }
+  b is some other number
+%{ endif }
+
+forall control statement:
+%{ forall c <- cs }
+  #{c}
+%{ endforall }
+   |]
+```
+
+If you compile this will `-ddump-splices`, the output `.dump-splices` file will
+look like this (after being cleaned up a little to make it more readable):
+
+```haskell
+app/Example.hs:(15,19)-(30,5): Splicing expression
+    template-haskell-2.11.0.0:Language.Haskell.TH.Quote.quoteExp
+      compileText
+      "variable interpolation:
+         #{a}
+
+       if control statement:
+       %{ if (b == 3) }
+         b is 3
+       %{ else }
+         b is some other number
+       %{ endif }
+
+       forall control statement:
+       %{ forall c <- cs }
+         #{c}
+       %{ endforall }
+          "
+  ======>
+    do
+      preEscapedText "variable interpolation:\n"
+      preEscapedToMarkup a
+      preEscapedText "\n\nif control statement:\n"
+      condH
+        [(b == 3, preEscapedText "  b is 3")]
+        (Just (preEscapedText "  b is some other number"))
+      preEscapedText "\n\nforall control statement:\n"
+      forM_ cs $ \c -> do
+        preEscapedText "  "
+        preEscapedToMarkup c
+        preEscapedText "\n"
+```
+
+Above the `=======>` line, you can see the quasiquote as it exists in the
+Haskell file.  Below the line, you can see the Haskell code that GHC has
+generated.

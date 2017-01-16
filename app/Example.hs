@@ -13,22 +13,20 @@ template =
       b = 3 :: Int
       cs = ["foo", "bar", "baz"]
   in [compileText|
-<h2>variable interpolation</h2>
-<p>#{a}</p>
+variable interpolation:
+  #{a}
 
-<h2>if control statement</h2>
+if control statement:
 %{ if (b == 3) }
-  <p>b is 3</p>
+  b is 3
 %{ else }
-  <p>b is some other number</p>
+  b is some other number
 %{ endif }
 
-<h2>forall control statement</h2>
-<ul>
-  %{ forall c <- cs }
-  <li>#{c}</li>
-  %{ endforall }
-</ul>
+forall control statement:
+%{ forall c <- cs }
+  #{c}
+%{ endforall }
    |]
 
 renderedTemplate :: String
