@@ -13,7 +13,7 @@ is a small example of using
 [heterocephalus](https://hackage.haskell.org/package/heterocephalus), a
 type-safe template engine.
 
-The Haskell code defining the the template looks like this:
+The Haskell code defining the template looks like this:
 
 ```haskell
 template :: Html
@@ -44,6 +44,13 @@ Haskell code.  This tutorial explains how to see exactly what code is
 generated.
 
 ## The Setup
+
+First, clone this repository and `cd` into it.
+
+```sh
+$ git clone https://github.com/cdepillabout/heterocephalus-example.git
+$ cd heterocephalus-example/
+```
 
 This tutorial assumes you are using `stack`.  You need to [install
 `stack`](https://docs.haskellstack.org/en/stable/README/#how-to-install) if you
