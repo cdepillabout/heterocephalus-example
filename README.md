@@ -40,7 +40,7 @@ forall control statement:
 ```
 
 Everything within the `compileText` quasiquote is expanded at compile-time into
-Haskell code.  This tutorial will walk-through how to see what code is
+Haskell code.  This tutorial explains how to see exactly what code is
 generated.
 
 ## The Setup
@@ -49,20 +49,20 @@ This tutorial assumes you are using `stack`.  You need to [install
 `stack`](https://docs.haskellstack.org/en/stable/README/#how-to-install) if you
 haven't already done so.
 
-If you don't have GHC installed, you can install it with `stack`.
+If GHC is not installed, it can be installed with `stack setup`.
 
 ```sh
 $ stack setup
 ```
 
-Now that GHC is installed, you can build the example program.
+Now that GHC is installed, the example program can be built with `stack build`.
 
 ```sh
 $ stack build
 ```
 
 The example program is built and placed somewhere under the `.stack-work/`
-directory.  You can use `stack exec` to execute it:
+directory.  `stack exec`  can be used to execute it:
 
 ```sh
 $ stack exec -- heterocephalus-example
@@ -81,7 +81,7 @@ forall control statement:
 
 ## `-ddump-splices`
 
-We need to compile the example program with the GHC flag `-ddump-splices` in
+The example program needs to be compiled with the GHC flag `-ddump-splices` in
 order to get GHC/Stack to dump the generated Haskell code to a file.
 
 If the example program has already been built (as above), then we need to do a
