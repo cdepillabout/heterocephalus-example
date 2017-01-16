@@ -94,9 +94,9 @@ $ stack clean
 $ stack build --ghc-options="-ddump-splices"
 ```
 
-__NOTE__: Not running `stack clean` first can cause `stack build` to appear to
+__NOTE__: _Not running `stack clean` first can cause `stack build` to appear to
 succeed, but no splice file to be generated.  Make sure `stack clean` is run
-before `stack build` whenever `-ddump-splices` is being used.
+before `stack build` whenever `-ddump-splices` is being used._
 
 GHC/Stack will generate a splice file somewhere under `.stack-work/`.  The
 location of the splice file will change depending on the architecture and Cabal
