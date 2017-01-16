@@ -103,7 +103,7 @@ location of the splice file will change depending on the architecture and Cabal
 version. `find` can be used to figure out where the splice file is.
 
 ```sh
-$ find .stack-work/ -name "*.dump-splices"
+$ find .stack-work/ -name '*.dump-splices'
 .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/heterocephalus-example/heterocephalus-example-tmp/app/Example.dump-splices
 ```
 
