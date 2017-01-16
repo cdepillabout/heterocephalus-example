@@ -100,14 +100,14 @@ before `stack build` whenever `-ddump-splices` is being used._
 
 GHC/Stack will generate a splice file somewhere under `.stack-work/`.  The
 location of the splice file will change depending on the architecture and Cabal
-version. `find` can be used to easily figure out where the splice file is.
+version. `find` can be used to figure out where the splice file is.
 
 ```sh
 $ find .stack-work/ -name "*.dump-splices"
 .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/heterocephalus-example/heterocephalus-example-tmp/app/Example.dump-splices
 ```
 
-This `.dump-splices` file will show the Haskell code is generated from each
+This `.dump-splices` file will show what Haskell code is generated from each
 Template Haskell and quasiquote expression.
 
 For example, a quasiquote like this:
@@ -116,7 +116,7 @@ For example, a quasiquote like this:
 [compileText|foo #{a}|]
 ```
 
-will produce Haskell code that looks like this (slightly simplified):
+would produce Haskell code that looks like this (slightly simplified):
 
 ```haskell
 do
@@ -153,8 +153,9 @@ forall control statement:
    |]
 ```
 
-If you compile this will `-ddump-splices`, the output `.dump-splices` file will
-look like this (after being cleaned up a little to make it more readable):
+If this is compiled with the `-ddump-splices` flag, the output
+`Example.dump-splices` file will look like this (after being cleaned up a
+little to make it more readable):
 
 ```haskell
 app/Example.hs:(15,19)-(30,5): Splicing expression
