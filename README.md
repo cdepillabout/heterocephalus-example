@@ -4,11 +4,11 @@
 
 When debugging Haskell code, it can be useful to look at the code generated
 from Template Haskell and Quasiquote expressions.  This repository is a
-tutorial explaining an easy way to get the generated code.
+tutorial explaining an easy way to view the generated Haskell code.
 
 ## The Intro
 
-This repository contains a single Haskell file, [Example.hs](Example.hs).  It
+This repository contains a single Haskell file, [Example.hs](app/Example.hs).  It
 is a small example of using
 [heterocephalus](https://hackage.haskell.org/package/heterocephalus), a
 type-safe template engine.
