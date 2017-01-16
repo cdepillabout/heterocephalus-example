@@ -84,9 +84,9 @@ forall control statement:
 The example program needs to be compiled with the GHC flag `-ddump-splices` in
 order to get GHC/Stack to dump the generated Haskell code to a file.
 
-If the example program has already been built (as above), then we need to do a
-`stack clean` first to make sure the executable gets rebuilt.  After that, we
-run `stack build` again, but we throw on the `-ddump-splices` flag.
+If the example program has already been built (as above), then `stack clean`
+needs to be run to make sure the executable gets rebuilt.  After that, `stack
+build` can be run again, but this time with the `-ddump-splices` flag.
 
 
 ```sh
