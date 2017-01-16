@@ -194,3 +194,8 @@ app/Example.hs:(15,19)-(30,5): Splicing expression
 Above the `=======>` line, you can see the quasiquote as it exists in the
 Haskell file.  Below the line, you can see the Haskell code that GHC has
 generated.
+
+## Conclusion
+
+Sometimes it is difficult to read the splice files, but it there is often no
+other way to easily debug Template Haskell and quasiquotes.
